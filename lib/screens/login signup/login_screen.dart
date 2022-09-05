@@ -156,6 +156,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:money_tracker_app/provider/auth_provider.dart';
 import 'package:money_tracker_app/screens/dashboard/dashborad.dart';
+import 'package:money_tracker_app/screens/login%20signup/password_reset_screen.dart';
 import 'package:money_tracker_app/screens/login%20signup/signup_screen.dart';
 import 'package:money_tracker_app/utils/txt_style.dart';
 import 'package:money_tracker_app/widgets/custom_button.dart';
@@ -193,6 +194,9 @@ class _LoginScreenState extends State<LoginScreen> {
       emailController.dispose();
       passwordController.dispose();
     }
+
+  // PASSWORD HIDE & SHOW //
+  bool hidePass = true;
 
 
   @override
@@ -247,6 +251,7 @@ class _LoginScreenState extends State<LoginScreen> {
                   CustomTextField(
                     controller: emailController, 
                     hintText: 'Email', 
+                    prefixIcon: Icons.email,
                     validator: (value){
                       if(value!.isEmpty){
                         return 'Email cannot be empty';
@@ -264,6 +269,14 @@ class _LoginScreenState extends State<LoginScreen> {
                   CustomTextField(
                     controller: passwordController, 
                     hintText: 'Password',
+                    obsecureText: hidePass,
+                    suffixIcon: hidePass ? Icons.visibility_off : Icons.visibility,
+                    onTap: (){
+                      setState(() {
+                        hidePass = !hidePass;
+                      });
+                    },
+                    prefixIcon: Icons.lock,
                     validator: (value){
                       if(value!.isEmpty){
                         return 'Password cannot be empty';
@@ -272,6 +285,15 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                       return null;
                     }
+                  ),
+
+                  SizedBox(height: height * 0.01,),
+
+                  InkWell(
+                    onTap: (){
+                      Get.to(() => PasswordResetScreen());
+                    },
+                    child: Text('Forgot password?', style: TxtStyle.headLineStyle4.copyWith(color: Colors.blue),),
                   ),
                   
                   SizedBox(height: height * 0.05,),

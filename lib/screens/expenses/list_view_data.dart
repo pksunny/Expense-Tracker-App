@@ -20,18 +20,6 @@ class ListViewData extends StatefulWidget {
 
 class _ListViewDataState extends State<ListViewData> {
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   IncomeProvider incomeProvider = Provider.of<IncomeProvider>(context, listen: false);
-  //   incomeProvider.getIncome();
-  //   incomeProvider.getSpentTotal();
-
-  //   ExpenseProvider expenseProvider = Provider.of<ExpenseProvider>(context, listen: false);
-  //   expenseProvider.getExpense();
-  // }
-
   @override
   Widget build(BuildContext context) {
 
@@ -128,7 +116,7 @@ class _ListViewDataState extends State<ListViewData> {
                 ),
                 title: Text(
                   expenseProvider.expenseList[index].expenseName,
-                  style: TxtStyle.headLineStyle3.copyWith(color: Colors.white),
+                  style: TxtStyle.headLineStyle3.copyWith(color: kNeumorphicColors[index]),
                 ),
                 // subtitle: Text("Intermediate", style: TextStyle(color: Colors.white)),
 
@@ -139,23 +127,24 @@ class _ListViewDataState extends State<ListViewData> {
                     //     color: kNeumorphicColors[index]),
 
                     Expanded(
-                        child: Padding(
-                      padding: EdgeInsets.symmetric(vertical: 10),
-                      child: LinearPercentIndicator(
-                          animation: true,
-                          animationDuration: 2000,
-                          lineHeight: 20.0,
-                          percent: (expenseProvider.expenseList[index].expenseAmount / getTotalIncome()) > 1 ? 1.0 : (expenseProvider.expenseList[index].expenseAmount / getTotalIncome()),
-                          // percent: 0.8,
-                          center: Text(
-                              "${(expenseProvider.expenseList[index].expenseAmount * 100 / getTotalIncome())}".substring(0, 5) + "%",
-                              style: TxtStyle.headLineStyle4
-                                  .copyWith(color: Colors.white)),
-                          // linearStrokeCap: LinearStrokeCap.round,
-                          barRadius: Radius.circular(20),
-                          progressColor: Colors.redAccent.shade100,
-                          backgroundColor: kNeumorphicColors[index]),
-                    )),
+                      child: Padding(
+                        padding: EdgeInsets.symmetric(vertical: 10),
+                        child: LinearPercentIndicator(
+                            animation: true,
+                            animationDuration: 2000,
+                            lineHeight: 20.0,
+                            percent: (expenseProvider.expenseList[index].expenseAmount / getTotalIncome()) > 1 ? 1.0 : (expenseProvider.expenseList[index].expenseAmount / getTotalIncome()),
+                            // percent: 0.8,
+                            center: Text(
+                                "${(expenseProvider.expenseList[index].expenseAmount * 100 / getTotalIncome()).toString() == 'Infinity' ? '+100' : (expenseProvider.majorExpenseList[index].expenseAmount * 100 / getTotalIncome()).toString().substring(0, 4)}" + "%",
+                                style: TxtStyle.headLineStyle4
+                                    .copyWith(color: Colors.white)),
+                            // linearStrokeCap: LinearStrokeCap.round,
+                            barRadius: Radius.circular(20),
+                            progressColor: Colors.redAccent.shade100,
+                            backgroundColor: kNeumorphicColors[index]),
+                      )
+                    ),
                   ],
                 ),
 

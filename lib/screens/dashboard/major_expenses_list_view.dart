@@ -50,7 +50,7 @@ class _MajorExpensesListViewState extends State<MajorExpensesListView> {
       if(price!=null) return total+price;
       else return total; 
     });
-    print(getTotalIncome());
+    // print(getTotalIncome());
 
 
     return Expanded(
@@ -84,14 +84,19 @@ class _MajorExpensesListViewState extends State<MajorExpensesListView> {
             Icon(Icons.cancel_outlined, size: 50, color: Colors.blueGrey,),
           ],
         ),
-      )
-      
-      : 
+      ) 
+
+      :
       
       ListView.builder(
         itemCount: expenseProvider.majorExpenseList.length,
         itemBuilder: (context, index) {
-          return Card(
+          if(expenseProvider.majorExpenseList.length == 0){
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return Card(
             elevation: 10,
             margin: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
             shape: RoundedRectangleBorder(
@@ -151,7 +156,7 @@ class _MajorExpensesListViewState extends State<MajorExpensesListView> {
                           percent: (expenseProvider.majorExpenseList[index].expenseAmount / getTotalIncome()) > 1 ? 1.0 : (expenseProvider.majorExpenseList[index].expenseAmount / getTotalIncome()),
                           // percent: 1.0,
                           center: Text(
-                              "${(expenseProvider.majorExpenseList[index].expenseAmount * 100 / getTotalIncome())}".substring(0, 5) + "%",
+                              "${(expenseProvider.majorExpenseList[index].expenseAmount * 100 / getTotalIncome()).toString() == 'Infinity' ? '+100' : (expenseProvider.majorExpenseList[index].expenseAmount * 100 / getTotalIncome()).toString().substring(0, 4)}" + "%",
                               style: TxtStyle.headLineStyle4
                                   .copyWith(color: Colors.white)),
                           // linearStrokeCap: LinearStrokeCap.round,
@@ -194,6 +199,8 @@ class _MajorExpensesListViewState extends State<MajorExpensesListView> {
               ),
             ),
           );
+
+          }
         },
       ),
     );

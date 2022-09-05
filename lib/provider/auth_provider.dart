@@ -3,11 +3,13 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
 import 'package:money_tracker_app/screens/dashboard/dashborad.dart';
 import 'package:money_tracker_app/screens/login%20signup/login_screen.dart';
+import 'package:money_tracker_app/screens/profile/my_profile.dart';
 import 'package:money_tracker_app/widgets/common_dialog.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_database/firebase_database.dart';
@@ -24,16 +26,6 @@ class AuthProvider with ChangeNotifier{
         email: email,
         password: password,
       );
-
-      // if(userCredential != null){
-      //   User? user = await FirebaseAuth.instance.currentUser;
-      //   FirebaseDatabase.instance.ref().child(user!.uid).set({
-      //     "email": email
-      //   }).then((value) async{
-      //     SharedPreferences pref = await SharedPreferences.getInstance();
-      //     pref.setString('email', email);
-      //   }); 
-      // }
 
       print('user Credential => $userCredential');
 
@@ -62,7 +54,7 @@ class AuthProvider with ChangeNotifier{
 
       Get.back();
       
-      CommonDialog.showErrorDialog(title: 'Congrats', description: 'User Added Successfully!');
+      CommonDialog.showErrorDialog(title: 'Congrats', description: 'You Signup Successfully!');
 
     } on FirebaseAuthException catch (e) {
       CommonDialog.hideLoading();
@@ -100,17 +92,6 @@ class AuthProvider with ChangeNotifier{
           password: password,
         );
 
-      // if (userCredential != null) {
-      //   User? user = await FirebaseAuth.instance.currentUser;
-      //   FirebaseDatabase.instance
-      //       .ref()
-      //       .child(user!.uid)
-      //       .set({"email": email}).then((value) async {
-      //     SharedPreferences pref = await SharedPreferences.getInstance();
-      //     pref.setString('email', email);
-      //   });
-      // }
-
       print(userCredential.user!.uid);
       // SAVING LOGGED IN USERID IN VARIABLE //
       userId = userCredential.user!.uid;
@@ -142,19 +123,24 @@ class AuthProvider with ChangeNotifier{
 
   // GET USER DATA
 
-  Map userProfileData = {'email': '', 'currency': ''};
+  Map userProfileData = {'userListId': '', 'email': '', 'currency': ''};
 
   Future<void> getUserProfileData() async {
-    // print("user id ${authController.userId}");
+
+    var userListId;
+
     try {
       var response = await FirebaseFirestore.instance
           .collection('usersList')
-          .where('user_Id', isEqualTo: userId)
+          .where('user_Id', isEqualTo: FirebaseAuth.instance.currentUser!.uid)
           .get();
-      // response.docs.forEach((result) {
-      //   print(result.data());
-      // });
+      response.docs.forEach((result) {
+        print(result.data());
+        print(result.id);
+        userListId = result.id;
+      });
       if (response.docs.length > 0) {
+        userProfileData['userListId'] = userListId;
         userProfileData['email'] = response.docs[0]['email'];
         userProfileData['currency'] = response.docs[0]['currency'];
       }
@@ -162,6 +148,34 @@ class AuthProvider with ChangeNotifier{
     } on FirebaseException catch (e) {
       print(e);
     } catch (error) {
+      print(error);
+    }
+  }
+
+
+  // EDIT CURRENCY FROM DATABASE //
+  Future editCurrency(userListId, email, currency) async {
+    print("UserList Id  $userListId");
+    try {
+      CommonDialog.showLoading();
+      await FirebaseFirestore.instance
+          .collection("usersList")
+          .doc(userListId)
+          .update({"currency": currency}).then((_) {
+        CommonDialog.hideLoading();
+        
+        Get.to(() => DashBoard());
+
+        Get.snackbar(
+          'Currency', 'Currency Updated', 
+          snackPosition: SnackPosition.TOP,
+          margin: EdgeInsets.symmetric(vertical: 20)
+        );
+      });
+    } catch (error) {
+      CommonDialog.hideLoading();
+      CommonDialog.showErrorDialog();
+
       print(error);
     }
   }
@@ -175,7 +189,7 @@ class AuthProvider with ChangeNotifier{
 
     try {
       return await FirebaseAuth.instance.signOut().then((value) {
-        Get.off(LoginScreen());
+        Get.offAll(LoginScreen());
       }).onError((error, stackTrace) {
         Get.snackbar('', error.toString());
       });
@@ -185,4 +199,33 @@ class AuthProvider with ChangeNotifier{
     }
   }
   
+
+  //  _-_-_-_-_-_-_-_- PASSWORD RESET _-_-_-_-_-_-_-_-
+  Future passwordReset(email) async {
+
+    CommonDialog.showLoading();
+
+    await FirebaseAuth.instance.sendPasswordResetEmail(email: email).then((value) {
+
+      CommonDialog.hideLoading();
+
+      Get.to(() => LoginScreen());
+
+      Get.snackbar(
+        'Please check your email', "Reset link sent to you via email", 
+        snackPosition: SnackPosition.TOP, 
+        margin: EdgeInsets.symmetric(vertical: 20)
+      );
+
+    }).onError((error, stackTrace) {
+      CommonDialog.hideLoading();
+
+      Get.snackbar(
+        'Sorry', error.toString(), 
+        snackPosition: SnackPosition.TOP, 
+        margin: EdgeInsets.symmetric(vertical: 20)
+      );
+    });
+  }
+
 }

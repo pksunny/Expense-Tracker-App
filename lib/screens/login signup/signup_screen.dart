@@ -51,6 +51,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
     bool isBackPressedOrTouchedOutSide = true;
     bool isDropDownOpened = true;
 
+    // PASSWORD HIDE & SHOW //
+    bool hidePass = true;
+
 
   @override
   Widget _uiSetup(BuildContext context) {
@@ -103,7 +106,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   // EMAIL FIELD
                   CustomTextField(
                     controller: emailController, 
-                    hintText: 'Email', 
+                    hintText: 'Email',
+                    prefixIcon: Icons.email,
                     validator: (value){
                       if(value!.isEmpty){
                         return 'Email cannot be empty';
@@ -121,6 +125,14 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   CustomTextField(
                     controller: passwordController, 
                     hintText: 'Password',
+                    obsecureText: hidePass,
+                    suffixIcon: hidePass ? Icons.visibility_off : Icons.visibility,
+                    onTap: (){
+                      setState(() {
+                        hidePass = !hidePass;
+                      });
+                    },
+                    prefixIcon: Icons.lock,
                     validator: (value){
                       if(value!.isEmpty){
                         return 'Password cannot be empty';

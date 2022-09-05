@@ -72,7 +72,7 @@ final kCategories = [
 ];
 
 final kNeumorphicColors = [
-  Colors.amber.withOpacity(0.9),
+  Colors.purple.withOpacity(0.9),
   Colors.blueAccent.withOpacity(0.9),
   Colors.brown.withOpacity(0.9),
   Colors.pinkAccent.withOpacity(0.9),

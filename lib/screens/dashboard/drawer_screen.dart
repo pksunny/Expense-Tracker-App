@@ -164,7 +164,7 @@ class _DrawerScreenState extends State<DrawerScreen> {
                 },
               ),
               CustomDrawerListTile(
-                icon: Icons.person,
+                icon: Icons.account_circle_outlined,
                 title: 'My Profile',
                 onTap: () {
                   Get.to(() => MyProfile());

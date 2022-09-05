@@ -67,12 +67,7 @@ class _EditIncomeState extends State<EditIncome> {
               controller: incomeNamecontroller,
               hintText: widget.incomeName,
               textInputType: TextInputType.text,
-              validator: (value){
-                if(value!.isEmpty){
-                  return 'Title cannot be empty';
-                }
-                return null;
-              }
+              readOnly: true,
             ),
     
             SizedBox(

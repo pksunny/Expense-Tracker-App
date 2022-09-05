@@ -96,7 +96,7 @@ class _DailyExpenseState extends State<DailyExpense> {
       else return total; 
     });
 
-    print('Daily Expense Total is ${getDailyTotalExpense()}');
+    // print('Daily Expense Total is ${getDailyTotalExpense()}');
 
     return Scaffold(
       backgroundColor: primary,

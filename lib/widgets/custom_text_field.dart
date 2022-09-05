@@ -6,20 +6,26 @@ import 'package:money_tracker_app/utils/txt_style.dart';
 class CustomTextField extends StatefulWidget {
   final TextEditingController controller;
   final String hintText;
+  final IconData? prefixIcon;
   final IconData? suffixIcon;
+  final VoidCallback? onTap;
   final bool obsecureText;
   final String? Function(String?)? validator;
   final TextInputType? textInputType;
+  final bool readOnly;
 
   CustomTextField(
     {
       Key? key,
       required this.controller,
       required this.hintText,
+      this.prefixIcon,
       this.suffixIcon,
+      this.onTap,
       this.obsecureText = false,
       this.validator,
       this.textInputType,
+      this.readOnly = false,
   }) : super(key: key);
 
   @override
@@ -67,8 +73,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
           // fillColor: Colors.teal,
           hintText: widget.hintText,
           hintStyle: TxtStyle.headLineStyle3.copyWith(color: Colors.black54),
-          // prefixIcon: Icon(suffixIcon, color: Colors.white),
+          prefixIcon: Icon(widget.prefixIcon, color: Colors.black54),
+          suffixIcon: InkWell(
+            onTap: widget.onTap,
+            child: Icon(widget.suffixIcon, color: Colors.black54),
+          ),
         ),
+        readOnly: widget.readOnly,
       ),
     );
   }

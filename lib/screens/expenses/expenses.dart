@@ -40,7 +40,17 @@ class _ExpensesState extends State<Expenses> {
     incomeProvider.getIncome();
 
     ExpenseProvider expenseProvider = Provider.of<ExpenseProvider>(context, listen: false);
-    expenseProvider.getExpense();
+    if(mounted){
+      setState(() {
+        expenseProvider.getExpense();
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
   }
   
   @override

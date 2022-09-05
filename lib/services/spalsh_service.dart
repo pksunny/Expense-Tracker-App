@@ -24,10 +24,11 @@ class SplashService {
 
     if(FirebaseAuth.instance.currentUser != null){
 
-      Timer(Duration(seconds: 3), () => Navigator.push(context, MaterialPageRoute(builder: (context) => DashBoard())));
+      // Timer(Duration(seconds: 3), () => Get.off(() => DashBoard()));
+      Timer(Duration(seconds: 3), () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => DashBoard())));
     } else {
 
-      Timer(Duration(seconds: 3), () => Navigator.push(context, MaterialPageRoute(builder: (context) => LoginScreen())));
+      Timer(Duration(seconds: 3), () => Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => LoginScreen())));
     }
 
   }

@@ -217,7 +217,7 @@ class ExpenseProvider with ChangeNotifier{
     }
   }
 
-  // DELETE INCOME DATA FROM DATABASE
+  // DELETE EXPENSE DATA FROM DATABASE
   Future deleteExpense(expenseId) async {
     print("expense Iddd  $expenseId");
     try {

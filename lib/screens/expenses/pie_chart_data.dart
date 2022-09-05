@@ -23,18 +23,6 @@ class PieChartBG extends StatefulWidget {
 
 class _PieChartBGState extends State<PieChartBG> {
 
-  // @override
-  // void initState() {
-  //   // TODO: implement initState
-  //   super.initState();
-  //   IncomeProvider incomeProvider = Provider.of<IncomeProvider>(context, listen: false);
-  //   incomeProvider.getIncome();
-
-  //   ExpenseProvider expenseProvider = Provider.of<ExpenseProvider>(context, listen: false);
-  //   expenseProvider.getExpense();
-  //   // expenseProvider.getMajorExpense();
-  // }
-
   @override
   Widget build(BuildContext context) {
 
@@ -101,7 +89,7 @@ class _PieChartBGState extends State<PieChartBG> {
                   },
                   child: Center(
                     child: Container(
-                      height: height * 0.10,
+                      height: height * 0.12,
                       decoration: BoxDecoration(
                         color: Color.fromRGBO(193, 214, 233, 1),
                         shape: BoxShape.circle,
@@ -121,7 +109,7 @@ class _PieChartBGState extends State<PieChartBG> {
                         ]
                       ),
                       child: Center(
-                        child: Text('${authProvider.userProfileData['currency']} ${getTotalExpense()}', style: TxtStyle.headLineStyle4,),
+                        child: Text('${authProvider.userProfileData['currency']}' + '\n' + '${getTotalExpense()}', style: TxtStyle.headLineStyle4, textAlign: TextAlign.center),
                       ),
                     ),
                   ),

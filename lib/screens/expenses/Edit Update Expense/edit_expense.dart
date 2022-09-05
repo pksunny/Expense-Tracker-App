@@ -68,6 +68,7 @@ class _EditExpenseState extends State<EditExpense> {
               controller: expenseNameController,
               hintText: widget.expenseName,
               textInputType: TextInputType.text,
+              readOnly: true,
             ),
     
             SizedBox(
@@ -79,6 +80,12 @@ class _EditExpenseState extends State<EditExpense> {
               controller: expenseAmountController,
               hintText: widget.expenseAmount.toString(),
               textInputType: TextInputType.number,
+              validator: (value){
+                if(value!.isEmpty){
+                  return 'Amount cannot be empty';
+                }
+                return null;
+              }
             ),
     
             SizedBox(

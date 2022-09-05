@@ -6,7 +6,10 @@ import 'package:money_tracker_app/provider/auth_provider.dart';
 import 'package:money_tracker_app/screens/dashboard/dashborad.dart';
 import 'package:money_tracker_app/screens/dashboard/drawer_screen.dart';
 import 'package:money_tracker_app/screens/expenses/expenses.dart';
+import 'package:money_tracker_app/screens/expenses/specific%20date%20expense/daily_expense.dart';
 import 'package:money_tracker_app/screens/login%20signup/login_screen.dart';
+import 'package:money_tracker_app/screens/profile/currency%20edit/edit_currency.dart';
+import 'package:money_tracker_app/screens/profile/currency%20edit/edit_currency_screen.dart';
 import 'package:money_tracker_app/utils/txt_style.dart';
 import 'package:money_tracker_app/widgets/custom_drawer_list_tile.dart';
 import 'package:provider/provider.dart';
@@ -100,6 +103,37 @@ class _MyProfileState extends State<MyProfile> {
 
                                         Text('Currency: ', style: TxtStyle.headLineStyle3,),
                                         Text('${authProvider.userProfileData['currency']}', style: TxtStyle.headLineStyle3.copyWith(color: Colors.blueGrey)),
+
+                                        InkWell(
+                                          child: CircleAvatar(
+                                            radius: 15,
+                                            backgroundColor: primary,
+                                            child: Icon(Icons.edit, size: 20,),
+                                          ),
+                                          onTap: (){
+                                            showModalBottomSheet(
+                                              elevation: 10,
+                                              backgroundColor: primary,
+                                              // isScrollControlled: true,
+                                              shape: RoundedRectangleBorder(
+                                              borderRadius: BorderRadius.only(
+                                                topLeft: Radius.circular(15),
+                                                topRight: Radius.circular(15),
+                                                )
+                                              ),
+                                              context: context,
+                                              builder: (context) {
+                                                return Padding(
+                                                  padding: EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
+                                                  child: EditCurrencyScreen(
+                                                    userListId: authProvider.userProfileData['userListId'], 
+                                                    userEmail: authProvider.userProfileData['email'], 
+                                                    userCurrency: authProvider.userProfileData['currency']
+                                                  ),
+                                                );
+                                              });
+                                          },
+                                        )
                                       ],
                                     )
                                   ],
@@ -122,19 +156,27 @@ class _MyProfileState extends State<MyProfile> {
                               height: 1,
                             ),
                             CustomDrawerListTile(
-                              icon: Icons.auto_graph,
-                              title: 'Your Expense',
-                              onTap: () {
-                                Get.to(() => Expenses());
-                              }
-                            ),
-                            CustomDrawerListTile(
                               icon: Icons.dashboard_sharp,
                               title: 'Dashboard',
                               onTap: () {
                                 Get.to(() => DashBoard());
                               }
                             ),
+                            CustomDrawerListTile(
+                              icon: Icons.assignment_outlined,
+                              title: 'Your Daily Expense',
+                              onTap: () {
+                                Get.to(() => DailyExpense());
+                              }
+                            ),
+                            CustomDrawerListTile(
+                              icon: Icons.auto_graph,
+                              title: 'Your Monthly Expense',
+                              onTap: () {
+                                Get.to(() => Expenses());
+                              }
+                            ),
+                            
                             CustomDrawerListTile(
                               icon: Icons.login_outlined,
                               title: 'Logout',

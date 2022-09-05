@@ -5,6 +5,7 @@ import 'dart:async';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:money_tracker_app/provider/auth_provider.dart';
 import 'package:money_tracker_app/provider/expense_provider.dart';
@@ -16,6 +17,7 @@ import 'package:money_tracker_app/screens/expenses/expenses.dart';
 import 'package:money_tracker_app/screens/login%20signup/login_screen.dart';
 import 'package:money_tracker_app/screens/login%20signup/signup_screen.dart';
 import 'package:money_tracker_app/screens/spalsh/spalsh_screen.dart';
+import 'package:money_tracker_app/widgets/common_dialog.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -23,7 +25,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  runApp(MyApp());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]).then((value) {
+    runApp(MyApp());
+  });
 }
 
 class MyApp extends StatelessWidget {
@@ -71,3 +75,22 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+
+// class Common extends StatelessWidget {
+//   const Common({super.key});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: Center(
+//         child: ElevatedButton(
+//           child: Text('pop'),
+//           onPressed: (){
+//             CommonDialog.showErrorDialog(title: 'You Signup Successfully!');
+//           },
+//         )
+//       ),
+//     );
+//   }
+// }
